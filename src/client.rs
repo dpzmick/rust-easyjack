@@ -135,7 +135,7 @@ impl<'a> Client<'a> {
                 self.c_client,
                 cstr.as_ptr(),
                 typestr.as_ptr(),
-                opts.bits() as u64,
+                opts.bits() as ::libc::c_ulong,
                 0)
         };
 
