@@ -1,6 +1,6 @@
 [package]
 name = "easyjack"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["David Zmick <dpzmick@gmail.com>"]
 description = "Easy, rusty, bindings for the jack api"
 documentation = "https://docs.rs/easyjack"
