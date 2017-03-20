@@ -1,0 +1,4 @@
+- process handler should not return an integer
+- process handler nframes should be a usize?
+- client open interface massively sucks
+- client should become activated and change type
