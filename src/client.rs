@@ -305,7 +305,7 @@ impl<'a> Client<'a> {
         }
     }
 
-    /// Set the client's sample rate change handler.
+    /// Set the client's metadata change handler.
     pub fn set_metadata_handler<T: MetadataHandler + 'a>(&mut self, handler: T)
         -> Result<(), status::Status>
     {
@@ -334,6 +334,13 @@ impl<'a> Client<'a> {
             (*this).on_port_connect(a, b, status)
         }
 
+        unsafe extern "C" fn xrun_callback<T: MetadataHandler>(
+            args: *mut libc::c_void) -> i32
+        {
+            let this = args as *mut T;
+            (*this).on_xrun()
+        }
+
         let b = Box::new(handler);
         let cbs = b.callbacks_of_interest();
 
@@ -360,8 +367,12 @@ impl<'a> Client<'a> {
                     // MetadataHandlers::PortRegistration,
                     // MetadataHandlers::PortRename,
                     // MetadataHandlers::GraphOrder,
-                    // MetadataHandlers::Xrun,
-                    _           => unimplemented!(),
+
+                     MetadataHandlers::Xrun =>
+                         jack_sys::jack_set_xrun_callback(
+                             self.c_client, Some(xrun_callback::<T>), ptr),
+
+                    _  => unimplemented!(),
                 };
 
                 if ret != 0 {

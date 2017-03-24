@@ -29,6 +29,8 @@ pub trait MetadataHandler {
     #[allow(unused_variables)]
     fn on_port_connect(&mut self, a: PortId, b: PortId, status: PortConnectStatus) { }
 
+    fn on_xrun(&mut self) -> i32 { 0 }
+
     /// Function must return all the types of callbacks it wishes to be given
     fn callbacks_of_interest(&self) -> Vec<MetadataHandlers>;
 }
